@@ -8,29 +8,38 @@ function init() {
   let rot = 0;
 
   // レンダラーを作成
+  // THREE.WebGLRendererクラスのコンストラクターには引数として、HTMLに配置したcanvas要素を指定し、連携させます。
   const renderer = new THREE.WebGLRenderer({
     canvas: document.querySelector('#myCanvas'),
   });
+  // レンダラーの大きさを設定(横.縦)
   renderer.setSize(width, height);
 
   // シーンを作成
   const scene = new THREE.Scene();
 
   // カメラを作成
+  // 遠近感が適用されるカメラ
+  // new THREE.PerspectiveCamera(視野角, アスペクト比)
   const camera = new THREE.PerspectiveCamera(45, width / height);
 
   // 平行光源を作成
+  // new THREE.AmbientLight(色, 光の強さ)
   const directionalLight = new THREE.DirectionalLight(0xffffff);
+  // 光を当てる方向　(X.Y.Z)
   directionalLight.position.set(1, 1, 1);
+  // シーンに追加
   scene.add(directionalLight);
 
   // マテリアルを作成
   const material = new THREE.MeshStandardMaterial({
+    // 画像の読み込み
     map: new THREE.TextureLoader().load('img/model.jpeg'),
     side: THREE.DoubleSide,
   });
 
   // 球体の形状を作成します
+  // ジオメトリ（球体）
   const geometry = new THREE.SphereGeometry(300, 30, 30);
   // 形状とマテリアルからメッシュを作成します
   const earthMesh = new THREE.Mesh(geometry, material);
