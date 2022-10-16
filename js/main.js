@@ -2,7 +2,7 @@
 window.addEventListener('DOMContentLoaded', init);
 
 function init() {
-  // サイズを指定
+  // 画面サイズを指定
   const width = 1050;
   const height = 540;
   let rot = 0;
@@ -35,6 +35,7 @@ function init() {
   const material = new THREE.MeshStandardMaterial({
     // 画像の読み込み
     map: new THREE.TextureLoader().load('img/model.jpeg'),
+    // 面のどちら側 (前面、背面、または両方) をレンダリングするかを定義します
     side: THREE.DoubleSide,
   });
 
@@ -54,6 +55,9 @@ function init() {
     // 頂点情報を作詞絵
     const vertices = [];
     for (let i = 0; i < 1000; i++) {
+      // Math.random() 関数は、 0 以上 1 未満 (0 は含むが、 1 は含まない) の範囲で浮動小数点の擬似乱数を返します。
+      // 立方体の一辺が3000の距離の中に1000個の粒子を配置します。
+      // x.y.zに頂点の情報を入れていきます。
       const x = 3000 * (Math.random() - 0.5);
       const y = 3000 * (Math.random() - 0.5);
       const z = 3000 * (Math.random() - 0.5);
@@ -62,10 +66,12 @@ function init() {
     }
 
     // 形状データを作成
+    // メッシュ、ライン、またはポイント ジオメトリの表現(バッファジオメトリ)
     const geometry = new THREE.BufferGeometry();
     geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
 
-    // マテリアルを作成
+    // マテリアルを作成(粒子のサイズや色)
+    // THREE.PointsMaterialクラスは形状を持たない為、視点が変化しても常に正面を向いて表示されます。
     const material = new THREE.PointsMaterial({
       size: 10,
       color: 0xffffff,
@@ -84,7 +90,9 @@ function init() {
     // ラジアンに変換する
     const radian = (rot * Math.PI) / 180;
     // 角度に応じてカメラの位置を設定
+    // 円周の半径 * Math.sin(角度 * Math.PI / 180)
     camera.position.x = 1000 * Math.sin(radian);
+    // 円周の半径 * Math.cos(角度 * Math.PI / 180);
     camera.position.z = 1000 * Math.cos(radian);
     // 原点方向を見つめる
     camera.lookAt(new THREE.Vector3(0, 0, 0));
